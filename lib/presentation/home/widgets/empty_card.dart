@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:patient_management/core/images/images.dart';
+
 import 'package:patient_management/core/utils/size_utils.dart';
 
 class EmptyBookingState extends StatelessWidget {
@@ -15,10 +17,11 @@ class EmptyBookingState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.event_busy_outlined,
-              size: SizeUtils.w(120),
-              color: Colors.grey.shade300,
+            Image.asset(
+              Images.emptyImage,
+              width: SizeUtils.w(200),
+              height: SizeUtils.h(200),
+              fit: BoxFit.contain,
             ),
             SizedBox(height: SizeUtils.h(24)),
             Text(

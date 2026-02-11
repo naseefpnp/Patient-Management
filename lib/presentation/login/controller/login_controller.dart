@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_management/core/utils/auth_utils.dart';
-import 'package:patient_management/infrastructure/login_repository.dart';
+import 'package:patient_management/infrastructure/login/login_repository.dart';
 
 class LoginController extends ChangeNotifier {
   final emailController = TextEditingController();

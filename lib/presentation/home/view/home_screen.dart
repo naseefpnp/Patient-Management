@@ -3,6 +3,7 @@ import 'package:patient_management/core/utils/app_route.dart';
 import 'package:patient_management/core/utils/size_utils.dart';
 import 'package:patient_management/presentation/home/controller/home_controller.dart';
 import 'package:patient_management/presentation/home/widgets/booking_card.dart';
+import 'package:patient_management/presentation/home/widgets/booking_card_shimmer.dart';
 import 'package:patient_management/presentation/home/widgets/empty_card.dart';
 import 'package:patient_management/presentation/widgets/elevated_button.dart';
 
@@ -55,12 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListenableBuilder(
         listenable: controller,
         builder: (context, _) {
-          if (controller.isLoading && controller.patients.isEmpty) {
-            return const Center(
-              child: CircularProgressIndicator(color: Color(0xFF0A7C3A)),
-            );
-          }
-
           if (controller.errorMessage != null && controller.patients.isEmpty) {
             return _buildErrorState();
           }
@@ -227,11 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             }).toList(),
-            onChanged: (String? newValue) {
-              if (newValue != null) {
-                controller.setSortBy(newValue);
-              }
-            },
+            onChanged: (String? newValue) {},
           ),
         ),
       ],
@@ -239,6 +230,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildPatientsList() {
+    if (controller.isLoading) {
+      return ListView.separated(
+        padding: EdgeInsets.symmetric(horizontal: SizeUtils.w(16)),
+        itemCount: 5,
+        separatorBuilder: (context, index) => SizedBox(height: SizeUtils.h(12)),
+        itemBuilder: (context, index) {
+          return const BookingCardShimmer();
+        },
+      );
+    }
+
     if (!controller.hasPatients) {
       return RefreshIndicator(
         color: const Color(0xFF0A7C3A),
@@ -268,9 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
             packageName: controller.getTreatmentNames(patient),
             date: controller.formatDate(patient.dateAndTime),
             time: controller.formatTime(patient.dateAndTime),
-            onTap: () {
-              // Navigate to details
-            },
+            onTap: () {},
           );
         },
       ),
@@ -286,8 +286,15 @@ class _HomeScreenState extends State<HomeScreen> {
         child: CustomElevatedButton(
           label: 'Register Now',
           isLoading: false,
-          onPressed: () {
-            Navigator.pushNamed(context, AppRoutes.register);
+          onPressed: () async {
+            final result = await Navigator.pushNamed(
+              context,
+              AppRoutes.register,
+            );
+
+            if (result == true) {
+              controller.fetchPatients();
+            }
           },
         ),
       ),

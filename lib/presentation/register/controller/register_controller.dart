@@ -1,8 +1,7 @@
-// lib/presentation/register/controller/register_controller.dart
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:patient_management/infrastructure/register_repository.dart';
+import 'package:patient_management/infrastructure/register/register_repository.dart';
 import 'package:patient_management/presentation/home/model/branch.dart';
 import 'package:patient_management/presentation/register/model/register_request.dart';
 import 'package:patient_management/presentation/register/model/treatment.dart';

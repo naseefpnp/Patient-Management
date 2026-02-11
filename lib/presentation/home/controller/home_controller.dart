@@ -1,7 +1,6 @@
-// lib/presentation/home/controller/controller.dart
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:patient_management/infrastructure/home_repository.dart';
+import 'package:patient_management/infrastructure/home/home_repository.dart';
 import 'package:patient_management/presentation/home/model/patients_response.dart';
 
 class HomeController extends ChangeNotifier {
@@ -23,6 +22,10 @@ class HomeController extends ChangeNotifier {
     _setLoading(true);
     errorMessage = null;
 
+    patients.clear();
+    filteredPatients.clear();
+    notifyListeners();
+
     try {
       final res = await _repo.listPatients();
       final data = res.data;
@@ -34,7 +37,6 @@ class HomeController extends ChangeNotifier {
                 .toList() ??
             [];
         filteredPatients = List.from(patients);
-        _applySorting();
       } else {
         errorMessage = data['message'] ?? 'Failed to load patients';
       }
@@ -63,43 +65,7 @@ class HomeController extends ChangeNotifier {
             branch.contains(searchQuery);
       }).toList();
     }
-
-    _applySorting();
     notifyListeners();
-  }
-
-  void setSortBy(String value) {
-    sortBy = value;
-    _applySorting();
-    notifyListeners();
-  }
-
-  void _applySorting() {
-    switch (sortBy) {
-      case 'Date':
-        filteredPatients.sort((a, b) {
-          if (a.dateAndTime == null && b.dateAndTime == null) return 0;
-          if (a.dateAndTime == null) return 1;
-          if (b.dateAndTime == null) return -1;
-          return b.dateAndTime!.compareTo(a.dateAndTime!);
-        });
-        break;
-      case 'Name':
-        filteredPatients.sort((a, b) {
-          final nameA = (a.name ?? '').toLowerCase();
-          final nameB = (b.name ?? '').toLowerCase();
-          return nameA.compareTo(nameB);
-        });
-        break;
-      case 'Time':
-        filteredPatients.sort((a, b) {
-          if (a.dateAndTime == null && b.dateAndTime == null) return 0;
-          if (a.dateAndTime == null) return 1;
-          if (b.dateAndTime == null) return -1;
-          return a.dateAndTime!.compareTo(b.dateAndTime!);
-        });
-        break;
-    }
   }
 
   String getTreatmentNames(PatientBookingModel patient) {
