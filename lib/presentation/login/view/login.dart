@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:patient_management/core/images/images.dart';
 import 'package:patient_management/core/utils/app_route.dart';
 import 'package:patient_management/core/utils/size_utils.dart';
-import 'package:patient_management/presentation/login/controller/controller.dart';
+import 'package:patient_management/presentation/login/controller/login_controller.dart';
 import 'package:patient_management/presentation/widgets/elevated_button.dart';
 import 'package:patient_management/presentation/widgets/snackbar.dart';
 import 'package:patient_management/presentation/widgets/text_field.dart';
