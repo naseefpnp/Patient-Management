@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkAuth() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 4));
 
     final isLoggedIn = await AuthUtils.instance.isLoggedIn;
     final token = await AuthUtils.instance.readAccessToken;
